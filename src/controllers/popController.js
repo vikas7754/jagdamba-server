@@ -36,11 +36,17 @@ const updatePopup = async (req, res) => {
   try {
     const { id } = req.params;
     const { image, link, show } = req.body;
+
+    if (show) {
+      await Popup.updateMany({}, { show: false });
+    }
+
     const updatedPopup = await Popup.findByIdAndUpdate(
       id,
       { image, link, show },
       { new: true }
     );
+
     return res.status(200).json(updatedPopup);
   } catch (err) {
     return res.status(500).json({ message: err.message });
