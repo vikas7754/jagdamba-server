@@ -108,11 +108,11 @@ userSchema.static("findByToken", async (token) => {
 });
 
 //delete token
-userSchema.methods.deleteToken = async (token, cb) => {
+userSchema.methods.deleteToken = async function () {
   try {
     const user = this;
     user.token = "";
-    await user.updateOne({ $unset: { token: 1 } });
+    await user.updateOne({ $set: { token: "" } });
     return user;
   } catch (err) {
     throw err;
