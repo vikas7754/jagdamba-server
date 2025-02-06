@@ -16,7 +16,7 @@ const createPopup = async (req, res) => {
 
 const getPopups = async (req, res) => {
   try {
-    const popups = await Popup.find();
+    const popups = await Popup.find().sort({ createdAt: -1 });
     return res.status(200).json(popups);
   } catch (err) {
     return res.status(500).json({ message: err.message });

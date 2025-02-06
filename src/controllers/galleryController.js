@@ -26,7 +26,7 @@ const createGallery = async (req, res) => {
 
 const getGallery = async (req, res) => {
   try {
-    const gallery = await Gallery.find();
+    const gallery = await Gallery.find().sort({ createdAt: -1 });
     return res.status(200).json(gallery);
   } catch (err) {
     return res.status(500).json({ message: err.message });
