@@ -6,7 +6,7 @@ router.post("/", auth, roleAuth, popupController.createPopup);
 
 router.get("/", popupController.getPopups);
 
-router.get("/:id", popupController.getPopup);
+router.get("/active", popupController.getPopup);
 
 router.put("/:id", auth, roleAuth, popupController.updatePopup);
 
