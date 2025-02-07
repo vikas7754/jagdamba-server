@@ -5,6 +5,12 @@ const maxSize = 1024 * 1024 * 5; // 5MB
 
 const createGallery = async (req, res) => {
   try {
+    const count = await Gallery.countDocuments();
+    if (count >= 30) {
+      return res
+        .status(400)
+        .json({ message: "Maximum number of images reached" });
+    }
     const file = req.file;
     if (!file) return res.status(400).json({ message: "Image is required" });
     if (!file.mimetype.startsWith("image"))
