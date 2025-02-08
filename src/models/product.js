@@ -11,7 +11,7 @@ const productSchema = new Schema(
     },
     karat: {
       type: Number,
-      required: true,
+      default: 0,
     },
     metal: {
       type: String,
@@ -24,7 +24,7 @@ const productSchema = new Schema(
     },
     percentage: {
       type: Number,
-      required: true,
+      default: 0,
     },
     gst: {
       type: Number,
