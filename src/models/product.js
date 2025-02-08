@@ -13,6 +13,15 @@ const productSchema = new Schema(
       type: Number,
       required: true,
     },
+    metal: {
+      type: String,
+      enum: ["gold", "silver"],
+      default: "gold",
+    },
+    premium: {
+      type: Number,
+      default: 0,
+    },
     percentage: {
       type: Number,
       required: true,
