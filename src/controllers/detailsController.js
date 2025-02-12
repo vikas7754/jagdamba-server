@@ -10,6 +10,22 @@ const getDetails = async (req, res) => {
   }
 };
 
+const getAllDetails = async (req, res) => {
+  try {
+    const { title } = req.query;
+    if (title) {
+      const details = await Details.find({
+        title: { $regex: title, $options: "i" },
+      });
+      return res.status(200).json(details);
+    }
+    const details = await Details.find({});
+    return res.status(200).json(details);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 const addDetails = async (req, res) => {
   try {
     const { title, data } = req.body;
@@ -50,4 +66,5 @@ module.exports = {
   addDetails,
   updateDetails,
   deleteDetails,
+  getAllDetails,
 };
