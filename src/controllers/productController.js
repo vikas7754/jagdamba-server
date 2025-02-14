@@ -5,12 +5,12 @@ const addProduct = async (req, res) => {
     const { karat, percentage, show, title, gst, metal, premium } = req.body;
     const newProduct = new Product({
       title,
-      karat,
-      percentage,
+      karat: karat || 0,
+      percentage: percentage || 0,
       show,
-      gst,
-      metal,
-      premium,
+      gst: gst || 0,
+      metal: metal || "gold",
+      premium: premium || 0,
     });
     const product = await newProduct.save();
     return res.status(200).json(product);
@@ -24,7 +24,15 @@ const updateProduct = async (req, res) => {
     const { karat, percentage, show, title, gst, metal, premium } = req.body;
     const product = await Product.findByIdAndUpdate(
       { _id: req.params.id },
-      { title, karat, percentage, show, gst, metal, premium }
+      {
+        title,
+        karat: karat || 0,
+        percentage: percentage || 0,
+        show,
+        gst: gst || 0,
+        premium: premium || 0,
+        metal: metal || "gold",
+      }
     );
     return res.status(200).json(product);
   } catch (err) {

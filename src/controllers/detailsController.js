@@ -16,10 +16,10 @@ const getAllDetails = async (req, res) => {
     if (title) {
       const details = await Details.find({
         title: { $regex: title, $options: "i" },
-      });
+      }).sort({ createdAt: -1 });
       return res.status(200).json(details);
     }
-    const details = await Details.find({});
+    const details = await Details.find({}).sort({ createdAt: -1 });
     return res.status(200).json(details);
   } catch (error) {
     return res.status(500).json({ message: error.message });
