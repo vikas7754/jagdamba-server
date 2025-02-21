@@ -37,7 +37,7 @@ const signup = async (req, res) => {
 
     if (!name) return res.status(400).json({ message: "Name is required!" });
     if (!email) return res.status(400).json({ message: "Email is required!" });
-    if (!city) return res.status(400).json({ message: "City is required!" });
+    // if (!city) return res.status(400).json({ message: "City is required!" });
 
     const emailRegEx = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     if (!emailRegEx.test(email)) {
@@ -82,8 +82,21 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const { mobile, password } = req.body;
-    const user = await User.findOne({ mobile, active: true });
+    const { password, mobile } = req.body;
+    let input = req.body?.input;
+    if (input) {
+      input = input.trim();
+      input = input.toLowerCase();
+    }
+
+    const query = { active: true };
+    if (input) {
+      query.$or = [{ email: input }, { mobile: input }];
+    } else if (mobile) {
+      query.mobile = mobile;
+    }
+    const user = await User.findOne(query);
+
     if (!user) return res.status(400).json({ message: "User not found!" });
     const isMatch = await user.comparepassword(password);
     if (!isMatch) return res.status(400).json({ message: "Invalid password!" });
