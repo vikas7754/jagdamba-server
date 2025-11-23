@@ -45,6 +45,28 @@ app.use("/api/header", require("./src/routes/headerRoute"));
 app.use("/api/gallery", require("./src/routes/galleryRoute"));
 app.use("/api/popup", require("./src/routes/popupRoute"));
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
+});
+
+const io = require("socket.io")(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  },
+});
+
+io.on("connection", (socket, req) => {
+  console.log("New client connected");
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+
+  socket.on("priceUpdate", (message) => {
+    console.log("Price update received:", message);
+    io.emit("priceUpdate", message);
+  });
 });
